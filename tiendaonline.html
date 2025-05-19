@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Virtual </title>
+
+    <style>
+        /* --- ESTILOS GLOBALES --- */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #2284e0, #92e0fc);
+            color: rgb(36, 32, 32);
+        }
+
+        header {
+            background: rgba(252, 247, 247, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+
+            margin: 10;
+            font-size: 3rem;
+
+        }
+
+        nav ul.menu {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0 0 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        nav ul.menu li {
+            position: relative;
+        }
+
+        nav ul.menu a {
+            text-decoration: none;
+            color: rgb(3, 3, 3);
+            padding: 10px 20px;
+            border-radius: 15px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        nav ul.menu a:hover {
+            background: rgba(151, 149, 149, 0.925);
+        }
+
+        /* --- SUBMENU flotante elegante --- */
+
+        /* --- SUBMENU flotante visible al pasar mouse --- */
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            background: rgba(255, 244, 244, 0.7);
+            /* Fondo oscuro semitransparente */
+            backdrop-filter: blur(20px);
+            /* Más blur */
+            border-radius: 20px;
+            padding: 10px 0;
+            min-width: 220px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            /* Sombra más fuerte */
+            transition: all 0.3s ease;
+            z-index: 999;
+            /* Muy por delante de todo */
+        }
+
+        .menu li {
+            position: relative;
+        }
+
+        .menu li:hover .submenu {
+            display: block;
+        }
+
+        .submenu li {
+            list-style: none;
+        }
+
+        .submenu li a {
+            text-decoration: none;
+            color: #111010;
+            padding: 10px 20px;
+            display: block;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 5px;
+            border-radius: 12px;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+
+        .submenu li a:hover {
+            background: #00c6ff;
+            color: black;
+        }
+
+
+
+        /* --- PRODUCTOS --- */
+        .productos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 40px;
+        }
+
+        /* --- TITULOS EXTRAVAGANTES DE PRODUCTOS --- */
+        .producto h2 {
+            font-size: 24px;
+            background: linear-gradient(90deg, #0f0f0f, #1d1d1d, #050505);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 8px rgba(61, 68, 70, 0.8);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            margin: 15px 0;
+            animation: brilloTitulo 3s infinite alternate;
+        }
+
+        /* --- ANIMACIÓN DE BRILLO --- */
+        @keyframes brilloTitulo {
+            0% {
+                text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.8);
+            }
+
+            100% {
+                text-shadow: 2px 2px 20px rgb(255, 255, 255);
+            }
+        }
+
+        .producto:hover {
+            transform: translateY(-10px);
+        }
+
+        .producto img {
+            width: 100%;
+            border-radius: 15px;
+        }
+
+        .producto iframe {
+            margin-top: 15px;
+            border-radius: 15px;
+        }
+
+        .producto h2 {
+            margin-top: 15px;
+        }
+
+        .producto p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .btn-agregar {
+            margin-top: 10px;
+            background: #00c6ff;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .btn-agregar:hover {
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            transform: scale(1.1);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 50px;
+        }
+
+        /* --- POPUP --- */
+        .popup {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 20px;
+            font-size: 18px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(100px);
+            transition: all 0.5s ease;
+            z-index: 1000;
+        }
+
+        .popup.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <h1 style="color : rgb(0, 0, 0) ;">
+            VITRINAS ONLINE
+        </h1>
+        <nav>
+            <ul class="menu">
+                <li><a href="#">Productos</a>
+                    <ul class="submenu">
+                        <li><a href="#">VITRINA AUTOMATIZADA</a></li>
+                        <li><a href="#">BASE GIRATORIA</a></li>
+                        <li><a href="#">VITRINA REFRIGERADA</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Contacto</a></li>
+                <ul class="submenu"></ul>
+                <li><a href="#" id="verCarrito">🛒 Carrito (<span id="cantidad">0</span>)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="productos">
+
+        <div class="producto">
+            <img src="Vitrina.jpeg" height="350" alt="Producto 1">
+            <h2>BASE GIRATORIA</h2>
+            <p>Base giratoria hexagonal con estructura de vidrio templado y soportes metálicos cromados. Cuenta con dos
+                repisas circulares de cristal, ideal para exhibición de productos como pasteles, postres, artesanías o
+                artículos de lujo. Su diseño moderno y compacto permite una visualización de 360°, siendo perfecta para
+                vitrinas de tiendas, ferias o exposiciones.
+                <iframe width="100%" height="200" src="https://www.youtube.com/embed/31v6DFTCGjw" title="Producto 3"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </p>
+
+            <button class="btn-agregar" onclick="agregarAlCarrito('BASE GIRATORIA')">Agregar al carrito</button>
+        </div>
+
+        <div class="producto">
+            <img src="Vitri.jpeg" height="350" alt="Producto 2">
+            <h2>VITRINA</h2>
+            <p>Esta es una vitrina refrigerada vertical de cristal, equipada con bandejas giratorias para exhibición de
+                productos. Ideal para repostería, pasteles, postres o productos frescos, ya que mantiene una temperatura
+                controlada mientras muestra de forma atractiva los alimentos. Su diseño en acero inoxidable y vidrio
+                templado ofrece alta resistencia y máxima visibilidad en tiendas, cafeterías y panaderías.</p>
+            <iframe width="100%" height="200" src="https://www.youtube.com/embed/Ksnhy9KU2H8" allowfullscreen></iframe>
+            <button class="btn-agregar" onclick="agregarAlCarrito('VITRINA REFRIGERADA')">Agregar al carrito</button>
+        </div>
+        <div class="producto">
+            <img src="base.jpeg" height="350" alt="Producto 2">
+            <h2>VITRINA AUTOMATIZADA</h2>
+            <p>Vitrina de exhibición vertical con estructura de vidrio templado y base de madera laminada. Cuenta con
+                varias repisas de cristal y sistema giratorio central, ideal para destacar productos de alta gama. Su
+                base con compartimiento cerrado y ruedas facilita la movilidad y almacenamiento seguro, perfecta para
+                boutiques, joyerías o exposiciones modernas.</p>
+            <iframe width="100%" height="200" src="https://www.youtube.com/embed/qshNsTDRbc0" title="Producto 2"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            <button class="btn-agregar" onclick="agregarAlCarrito('VITRINA AUTOMATIZADA')">Agregar al carrito</button>
+        </div>
+
+        <!-- Puedes copiar y pegar más productos aquí -->
+
+    </section>
+
+    <footer>
+        <p>© 2025 Mi Tienda Virtual. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        let carrito = [];
+        const cantidadSpan = document.getElementById('cantidad');
+
+        // Función para mostrar popup bonito
+        function mostrarPopup(producto) {
+            const popup = document.createElement('div');
+            popup.className = 'popup';
+            popup.innerHTML = `<p>✅ <strong>${producto}</strong> agregado al carrito</p>`;
+            document.body.appendChild(popup);
+
+            // Animación de entrada
+            setTimeout(() => {
+                popup.classList.add('visible');
+            }, 10);
+
+            // Desaparece en 2.5 segundos
+            setTimeout(() => {
+                popup.classList.remove('visible');
+                setTimeout(() => {
+                    document.body.removeChild(popup);
+                }, 500);
+            }, 2500);
+        }
+
+        function agregarAlCarrito(producto) {
+            carrito.push(producto);
+            cantidadSpan.textContent = carrito.length;
+            mostrarPopup(producto);
+        }
+
+        document.getElementById('verCarrito').addEventListener('click', function () {
+            if (carrito.length === 0) {
+                alert('El carrito está vacío');
+            } else {
+                alert('Productos en tu carrito:\n' + carrito.join('\n'));
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
